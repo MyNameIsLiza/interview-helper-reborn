@@ -1,15 +1,11 @@
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 import type { Dispatch } from 'redux';
 
+import type { ServerError } from '../../services/api';
+import { categoriesRequests } from '../../services/api';
+import type { Category } from '../../types';
 import type { RootState } from '..';
-
-export interface Category {
-  id: string;
-  title: string;
-  description: string;
-}
 
 interface CategoriesState {
   loading: boolean;
@@ -128,22 +124,11 @@ export const categoriesSelector = (state: RootState): CategoriesState =>
 
 export default categoriesSlice.reducer;
 
-interface ServerResponse<ResultType> {
-  message: string;
-  result: ResultType;
-}
-
-interface ServerError {
-  message: string;
-}
-
 export function fetchCategories(): (dispatch: Dispatch) => void {
   return (dispatch: Dispatch) => {
     dispatch(getCategoriesStarted());
-    axios
-      .get<ServerResponse<Category[]>>(
-        'https://interview-helper-api.herokuapp.com/api/categories',
-      )
+    categoriesRequests
+      .fetchCategories()
       .then((response) => dispatch(getCategoriesSuccess(response.data.result)))
       .catch((error: ServerError) =>
         dispatch(getCategoriesFailure(error.message)),
@@ -154,10 +139,8 @@ export function fetchCategories(): (dispatch: Dispatch) => void {
 export function deleteCategory(id: string): (dispatch: Dispatch) => void {
   return (dispatch: Dispatch) => {
     dispatch(deleteCategoryStarted());
-    axios
-      .delete<ServerResponse<Category>>(
-        `https://interview-helper-api.herokuapp.com/api/categories/${id}`,
-      )
+    categoriesRequests
+      .deleteCategory(id)
       .then((response) =>
         dispatch(deleteCategorySuccess(response.data.result.id)),
       )
@@ -172,11 +155,8 @@ export function addCategory(
 ): (dispatch: Dispatch) => void {
   return (dispatch: Dispatch) => {
     dispatch(addCategoryStarted());
-    axios
-      .post<ServerResponse<Category>>(
-        `https://interview-helper-api.herokuapp.com/api/categories`,
-        category,
-      )
+    categoriesRequests
+      .addCategory(category)
       .then((response) => dispatch(addCategorySuccess(response.data.result)))
       .catch((error: ServerError) =>
         dispatch(addCategoryFailure(error.message)),
@@ -187,11 +167,8 @@ export function addCategory(
 export function editCategory(category: Category): (dispatch: Dispatch) => void {
   return (dispatch: Dispatch) => {
     dispatch(editCategoryStarted());
-    axios
-      .put<ServerResponse<Category>>(
-        `https://interview-helper-api.herokuapp.com/api/categories`,
-        category,
-      )
+    categoriesRequests
+      .editCategory(category)
       .then((response) => dispatch(editCategorySuccess(response.data.result)))
       .catch((error: ServerError) =>
         dispatch(editCategoryFailure(error.message)),

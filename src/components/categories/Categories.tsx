@@ -3,8 +3,8 @@ import { Button, Modal, Space } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import type { Category } from '../../store/slices/categories';
 import { categoriesSelector } from '../../store/slices/categories';
+import type { Category } from '../../types';
 import Loader from '../axillary/loader/Loader';
 
 import CategoriesForm from './CategoriesForm';
@@ -51,7 +51,6 @@ export default function Categories(): React.ReactElement {
           onCancel={clearCategoriesInfo}
           onOk={clearCategoriesInfo}
           footer={null}
-          width="50%"
         >
           <CategoriesForm />
         </Modal>

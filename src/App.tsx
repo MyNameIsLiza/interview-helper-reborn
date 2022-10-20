@@ -1,8 +1,7 @@
-import type { MenuProps } from 'antd';
-import { Menu } from 'antd';
-import { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+import Navigation from './components/axillary/Navigation';
 import Categories from './components/categories/Categories';
 import { fetchCategories } from './store/slices/categories';
 import { useAppDispatch } from './store';
@@ -12,11 +11,6 @@ import './App.css';
 
 function App(): React.ReactElement {
   const dispatch = useAppDispatch();
-  const [current, setCurrent] = useState('home');
-
-  const menuOnClick: MenuProps['onClick'] = (event) => {
-    setCurrent(event.key);
-  };
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -26,20 +20,9 @@ function App(): React.ReactElement {
     <div className="App">
       <Router>
         <div>
-          <Menu
-            onClick={menuOnClick}
-            mode="horizontal"
-            selectedKeys={[current]}
-          >
-            <Menu.Item key="home">
-              <Link to="/">Home</Link>
-            </Menu.Item>
-            <Menu.Item key="categories">
-              <Link to="/categories">Categories</Link>
-            </Menu.Item>
-          </Menu>
+          <Navigation />
           <Routes>
-            <Route path="/" element={<>Home</>} />
+            <Route path="/" element={<div>Home</div>} />
             <Route path="categories" element={<Categories />} />
           </Routes>
         </div>

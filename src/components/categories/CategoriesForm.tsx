@@ -1,19 +1,19 @@
 import { Button, Form, Input } from 'antd';
 import { useCallback, useContext, useEffect } from 'react';
 
+import withContextCheck from '../../hoc/withContextCheck';
 import { useAppDispatch } from '../../store';
-import type { Category } from '../../store/slices/categories';
 import { addCategory, editCategory } from '../../store/slices/categories';
+import type { Category } from '../../types';
 
 import CategoriesFormContext from './CategoriesFormContext';
 
-export default function CategoriesForm(): React.ReactElement {
+function CategoriesForm(): React.ReactElement {
   const dispatch = useAppDispatch();
   const context = useContext(CategoriesFormContext);
   const [form] = Form.useForm();
 
   const onFinish = useCallback((values: Category): void => {
-    console.log('Success:', values);
     if (context?.category?.id) {
       dispatch(editCategory({ ...values, id: context.category.id }));
     } else {
@@ -24,23 +24,20 @@ export default function CategoriesForm(): React.ReactElement {
   }, []);
 
   const onFinishFailed = useCallback((errorInfo: any): void => {
-    console.log('Failed:', errorInfo);
+    console.error('Failed:', errorInfo);
   }, []);
 
   useEffect(() => () => {
-    console.log('RESET');
     form.resetFields();
   });
-
-  if (!context) return <>Error</>;
 
   return (
     <Form
       form={form}
-      labelCol={{ span: 3 }}
+      labelCol={{ span: 4 }}
       layout="horizontal"
       name="basic"
-      initialValues={{ ...context.category }}
+      initialValues={{ ...context?.category }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
       autoComplete="off"
@@ -69,3 +66,5 @@ export default function CategoriesForm(): React.ReactElement {
     </Form>
   );
 }
+
+export default withContextCheck(CategoriesForm);

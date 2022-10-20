@@ -1,4 +1,4 @@
-import type { Category } from '../../store/slices/categories';
+import type { Category } from '../../types';
 
 export interface CategoriesFormContextType {
   setCategory: (category: Category | null) => void;

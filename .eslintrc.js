@@ -138,7 +138,6 @@ module.exports = {
         ignoreDefaultValues: true,
       },
     ],
-    'no-console': 'error',
     'jest/prefer-expect-assertions': 'off',
     'jest/no-conditional-expect': 'off',
     'jest/expect-expect': 'off',
@@ -190,6 +189,8 @@ module.exports = {
     '@typescript-eslint/prefer-readonly-parameter-types': 'warn',
     '@typescript-eslint/no-magic-numbers': 'warn',
     'no-console': 'warn',
+    'react/jsx-props-no-spreading': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'warn',
   },
   settings: {
     'import/parsers': {
