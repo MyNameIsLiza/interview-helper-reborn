@@ -8,21 +8,31 @@ export default function Navigation(): React.ReactElement {
     () => [
       {
         key: '/',
-        label: <Link to="/">Home</Link>,
+        label: (
+          <Link to="/" className="text-main">
+            Home
+          </Link>
+        ),
       },
       {
         key: '/categories',
-        label: <Link to="/categories">Categories</Link>,
+        label: (
+          <Link to="/categories" className="text-main">
+            Categories
+          </Link>
+        ),
       },
     ],
     [],
   );
 
   return (
-    <Menu
-      mode="horizontal"
-      selectedKeys={[location.pathname]}
-      items={menuItems}
-    />
+    <header>
+      <Menu
+        mode="horizontal"
+        selectedKeys={[location.pathname]}
+        items={menuItems}
+      />
+    </header>
   );
 }

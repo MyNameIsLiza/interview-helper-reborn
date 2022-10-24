@@ -1,3 +1,11 @@
 .App {
   margin: 25px 50px;
 }
+
+.text-main {
+  color: #6E3AFF !important;
+}
+
+body {
+  height: 0;
+}

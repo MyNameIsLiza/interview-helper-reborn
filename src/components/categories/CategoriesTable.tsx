@@ -10,7 +10,15 @@ function CategoriesTable(): React.ReactElement | null {
   const { categories } = useSelector(categoriesSelector);
   const columns = useCategoriesColumns();
 
-  return <Table dataSource={categories} columns={columns} />;
+  return (
+    <Table
+      dataSource={categories.map((category) => ({
+        ...category,
+        key: category.id,
+      }))}
+      columns={columns}
+    />
+  );
 }
 
 export default withContextCheck(CategoriesTable);

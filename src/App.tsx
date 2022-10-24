@@ -21,10 +21,12 @@ function App(): React.ReactElement {
       <Router>
         <div>
           <Navigation />
-          <Routes>
-            <Route path="/" element={<div>Home</div>} />
-            <Route path="categories" element={<Categories />} />
-          </Routes>
+          <main>
+            <Routes>
+              <Route path="/" element={<h1>Home</h1>} />
+              <Route path="categories" element={<Categories />} />
+            </Routes>
+          </main>
         </div>
       </Router>
     </div>
