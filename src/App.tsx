@@ -23,7 +23,10 @@ function App(): React.ReactElement {
           <Navigation />
           <main>
             <Routes>
-              <Route path="/" element={<h1>Home</h1>} />
+              <Route
+                path="/"
+                element={<h1 data-testid="home-title">Home</h1>}
+              />
               <Route path="categories" element={<Categories />} />
             </Routes>
           </main>
