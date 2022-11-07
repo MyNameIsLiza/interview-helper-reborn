@@ -3,14 +3,14 @@ import type { ColumnsType } from 'antd/es/table';
 import { useContext } from 'react';
 
 import { useAppDispatch } from '../../store';
-import { deleteCategory } from '../../store/slices/categories';
-import type { Category } from '../../types';
+import { deleteTopic } from '../../store/slices/topics';
+import type { Topic } from '../../types';
 
-import CategoriesFormContext from './CategoriesFormContext';
+import TopicsFormContext from './TopicsFormContext';
 
-export default function useCategoriesColumns(): ColumnsType<Category> {
+export default function useTopicsColumns(): ColumnsType<Topic> {
   const dispatch = useAppDispatch();
-  const context = useContext(CategoriesFormContext);
+  const context = useContext(TopicsFormContext);
   return [
     {
       title: 'Title',
@@ -22,11 +22,10 @@ export default function useCategoriesColumns(): ColumnsType<Category> {
       dataIndex: '',
       key: 'edit',
       width: '5%',
-      render: (category: Category) => (
+      render: (category: Topic) => (
         <EditOutlined
-          onClick={(event): void => {
-            event.stopPropagation();
-            context?.setCategory(category);
+          onClick={(): void => {
+            context?.setTopic(category);
             context?.setOpen(true);
           }}
         />
@@ -37,11 +36,10 @@ export default function useCategoriesColumns(): ColumnsType<Category> {
       dataIndex: '',
       key: 'x',
       width: '5%',
-      render: (category: Category) => (
+      render: (category: Topic) => (
         <DeleteOutlined
-          onClick={(event): void => {
-            event.stopPropagation();
-            dispatch(deleteCategory(category.id));
+          onClick={(): void => {
+            dispatch(deleteTopic(category.id));
           }}
         />
       ),

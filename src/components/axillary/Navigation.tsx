@@ -22,6 +22,14 @@ export default function Navigation(): React.ReactElement {
           </Link>
         ),
       },
+      {
+        key: '/topics',
+        label: (
+          <Link to="/topics" className="text-main">
+            Topics
+          </Link>
+        ),
+      },
     ],
     [],
   );
