@@ -9,3 +9,11 @@
 body {
   height: 0;
 }
+
+ul {
+  margin: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

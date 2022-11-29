@@ -2,22 +2,20 @@ import { Button, Form, Input } from 'antd';
 import { useCallback, useContext, useEffect } from 'react';
 
 import withContextCheck from '../../hoc/withContextCheck';
-import { useAppDispatch } from '../../store';
-import { addTopic, editTopic } from '../../store/slices/topics';
 import type { Topic } from '../../types';
 
 import TopicsFormContext from './TopicsFormContext';
 
 function TopicsForm(): React.ReactElement {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const context = useContext(TopicsFormContext);
   const [form] = Form.useForm();
 
   const onFinish = useCallback((values: Topic): void => {
     if (context?.topic?.id) {
-      dispatch(editTopic({ ...values, id: context.topic.id }));
+      // dispatch(editTopic({ ...values, id: context.topic.id }));
     } else {
-      dispatch(addTopic(values));
+      // dispatch(addTopic(values));
     }
     context?.setTopic(null);
     context?.setOpen(false);
@@ -67,4 +65,4 @@ function TopicsForm(): React.ReactElement {
   );
 }
 
-export default withContextCheck(TopicsForm);
+export default withContextCheck(TopicsForm, TopicsFormContext);

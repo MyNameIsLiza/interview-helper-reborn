@@ -1,24 +1,28 @@
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Modal, Space } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
-import { useSelector } from 'react-redux';
 
-import { categoriesSelector } from '../../store/slices/categories';
 import type { Category } from '../../types';
 import Loader from '../axillary/loader/Loader';
+import useLogChanges from '../axillary/useLogChanges';
 
 import CategoriesForm from './CategoriesForm';
 import CategoriesFormContext from './CategoriesFormContext';
 import CategoriesTable from './CategoriesTable';
+import useCategories from './useCategories';
 
 export default function Categories(): React.ReactElement {
-  const { categories, loading, error } = useSelector(categoriesSelector);
+  const { categories, isLoading, error, status, isFetching } = useCategories();
   const [open, setOpen] = useState<boolean>(false);
   const [category, setCategory] = useState<Category | null>(null);
 
+  useLogChanges('Categories', 'status', status);
+  useLogChanges('Categories', 'isFetching', isFetching);
+  useLogChanges('Categories', 'categories', categories);
+
   const contextData = useMemo(
-    () => ({ setOpen, setCategory, category }),
-    [category, setOpen, setCategory],
+    () => ({ setOpen, setCategory, category, open }),
+    [category, setOpen, setCategory, open],
   );
 
   const clearCategoriesInfo = useCallback(() => {
@@ -29,10 +33,10 @@ export default function Categories(): React.ReactElement {
   return (
     <div>
       <h1>Categories</h1>
-      {loading ? (
+      {isLoading || isFetching ? (
         <Loader />
       ) : error ? (
-        <h2>{error}</h2>
+        <h2>{error.message}</h2>
       ) : categories.length > 0 ? (
         <div>
           <CategoriesFormContext.Provider value={contextData}>

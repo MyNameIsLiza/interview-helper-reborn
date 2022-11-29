@@ -2,14 +2,12 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
 import { useContext } from 'react';
 
-import { useAppDispatch } from '../../store';
-import { deleteTopic } from '../../store/slices/topics';
 import type { Topic } from '../../types';
 
 import TopicsFormContext from './TopicsFormContext';
 
 export default function useTopicsColumns(): ColumnsType<Topic> {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const context = useContext(TopicsFormContext);
   return [
     {
@@ -36,10 +34,10 @@ export default function useTopicsColumns(): ColumnsType<Topic> {
       dataIndex: '',
       key: 'x',
       width: '5%',
-      render: (category: Topic) => (
+      render: (topic: Topic) => (
         <DeleteOutlined
-          onClick={(): void => {
-            dispatch(deleteTopic(category.id));
+          onClick={async () => {
+            // dispatch(deleteTopic(topic.id));
           }}
         />
       ),

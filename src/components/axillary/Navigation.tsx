@@ -1,5 +1,5 @@
 import { Menu } from 'antd';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Navigation(): React.ReactElement {

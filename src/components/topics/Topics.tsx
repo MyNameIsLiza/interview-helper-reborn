@@ -1,20 +1,17 @@
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { Button, Modal, Space } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
-import { useSelector } from 'react-redux';
 
-import { topicsRequests } from '../../services/api';
-import { topicsSelector } from '../../store/slices/topics';
 import type { Topic } from '../../types';
 import Loader from '../axillary/loader/Loader';
 
 import TopicsForm from './TopicsForm';
 import TopicsFormContext from './TopicsFormContext';
 import TopicsTable from './TopicsTable';
+import useTopics from './useTopics';
 
 export default function Topics(): React.ReactElement {
-  const { topics, loading, error } = useSelector(topicsSelector);
+  const { topics, isLoading, error } = useTopics();
   const [open, setOpen] = useState<boolean>(false);
   const [topic, setTopic] = useState<Topic | null>(null);
 
@@ -31,10 +28,10 @@ export default function Topics(): React.ReactElement {
   return (
     <div>
       <h1>Topics</h1>
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : error ? (
-        <h2>{error}</h2>
+        <h2>{error.message}</h2>
       ) : topics.length > 0 ? (
         <div>
           <TopicsFormContext.Provider value={contextData}>

@@ -2,34 +2,41 @@ import { Button, Form, Input } from 'antd';
 import { useCallback, useContext, useEffect } from 'react';
 
 import withContextCheck from '../../hoc/withContextCheck';
-import { useAppDispatch } from '../../store';
-import { addCategory, editCategory } from '../../store/slices/categories';
 import type { Category } from '../../types';
 
 import CategoriesFormContext from './CategoriesFormContext';
+import useAddCategory from './useAddCategory';
+import useEditCategory from './useEditCategory';
 
 function CategoriesForm(): React.ReactElement {
-  const dispatch = useAppDispatch();
   const context = useContext(CategoriesFormContext);
   const [form] = Form.useForm();
+  const { addCategory } = useAddCategory();
+  const { editCategory } = useEditCategory();
 
-  const onFinish = useCallback((values: Category): void => {
-    if (context?.category?.id) {
-      dispatch(editCategory({ ...values, id: context.category.id }));
-    } else {
-      dispatch(addCategory(values));
-    }
-    context?.setCategory(null);
-    context?.setOpen(false);
-  }, []);
+  const onFinish = useCallback(
+    async (values: Category): Promise<any> => {
+      await (context?.category?.id
+        ? editCategory({ ...values, id: context.category.id })
+        : addCategory(values));
+      context?.setOpen(false);
+      context?.setCategory(null);
+    },
+    [context],
+  );
 
   const onFinishFailed = useCallback((errorInfo: any): void => {
     console.error('Failed:', errorInfo);
   }, []);
 
-  useEffect(() => () => {
-    form.resetFields();
-  });
+  useEffect(
+    () => () => {
+      if (!context?.open) {
+        form.resetFields();
+      }
+    },
+    [context?.open],
+  );
 
   return (
     <Form
@@ -47,7 +54,7 @@ function CategoriesForm(): React.ReactElement {
         name="title"
         rules={[{ required: true, message: 'Please input title' }]}
       >
-        <Input />
+        <Input key={context?.category?.id || ''} />
       </Form.Item>
 
       <Form.Item
@@ -67,4 +74,4 @@ function CategoriesForm(): React.ReactElement {
   );
 }
 
-export default withContextCheck(CategoriesForm);
+export default withContextCheck(CategoriesForm, CategoriesFormContext);

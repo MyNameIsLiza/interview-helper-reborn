@@ -1,13 +1,13 @@
 import { Table } from 'antd';
-import { useSelector } from 'react-redux';
 
 import withContextCheck from '../../hoc/withContextCheck';
-import { topicsSelector } from '../../store/slices/topics';
 
+import TopicsFormContext from './TopicsFormContext';
+import useTopics from './useTopics';
 import useTopicsColumns from './useTopicsColumns';
 
 function TopicsTable(): React.ReactElement | null {
-  const { topics } = useSelector(topicsSelector);
+  const { topics } = useTopics();
   const columns = useTopicsColumns();
 
   return (
@@ -21,4 +21,4 @@ function TopicsTable(): React.ReactElement | null {
   );
 }
 
-export default withContextCheck(TopicsTable);
+export default withContextCheck(TopicsTable, TopicsFormContext);

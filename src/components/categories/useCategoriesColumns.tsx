@@ -1,16 +1,21 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import type { ColumnsType } from 'antd/es/table';
+import type { CellType } from 'rc-table/lib/interface';
 import { useContext } from 'react';
 
-import { useAppDispatch } from '../../store';
-import { deleteCategory } from '../../store/slices/categories';
-import type { Category } from '../../types';
+import type { Category, Topic } from '../../types';
 
 import CategoriesFormContext from './CategoriesFormContext';
+import useDeleteCategory from './useDeleteCategory';
 
-export default function useCategoriesColumns(): ColumnsType<Category> {
-  const dispatch = useAppDispatch();
+interface CategoryColumnsType extends Category {
+  key: string;
+}
+
+export default function useCategoriesColumns(): ColumnsType<CategoryColumnsType> {
   const context = useContext(CategoriesFormContext);
+  const { deleteCategory } = useDeleteCategory();
+
   return [
     {
       title: 'Title',
@@ -22,7 +27,7 @@ export default function useCategoriesColumns(): ColumnsType<Category> {
       dataIndex: '',
       key: 'edit',
       width: '5%',
-      render: (category: Category) => (
+      render: (value, category) => (
         <EditOutlined
           onClick={(event): void => {
             event.stopPropagation();
@@ -37,14 +42,23 @@ export default function useCategoriesColumns(): ColumnsType<Category> {
       dataIndex: '',
       key: 'x',
       width: '5%',
-      render: (category: Category) => (
-        <DeleteOutlined
-          onClick={(event): void => {
-            event.stopPropagation();
-            dispatch(deleteCategory(category.id));
-          }}
-        />
-      ),
+      render: (value, category) => {
+        return {
+          props: {
+            onClick: (event: Event) => {
+              event.stopPropagation();
+            },
+          } as CellType<CategoryColumnsType>,
+          children: (
+            <DeleteOutlined
+              onClick={async (event) => {
+                event.stopPropagation();
+                await deleteCategory(category.id);
+              }}
+            />
+          ),
+        };
+      },
     },
   ];
 }

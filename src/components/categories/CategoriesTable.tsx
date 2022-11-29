@@ -1,32 +1,68 @@
 import { Table } from 'antd';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import withContextCheck from '../../hoc/withContextCheck';
-import { categoriesSelector } from '../../store/slices/categories';
+import useTopics from '../topics/useTopics';
 
+import CategoriesFormContext from './CategoriesFormContext';
+import useCategories from './useCategories';
 import useCategoriesColumns from './useCategoriesColumns';
+import useDeleteCategory from './useDeleteCategory';
 
 function CategoriesTable(): React.ReactElement | null {
-  const { categories } = useSelector(categoriesSelector);
+  const { categories } = useCategories();
+  const { topics } = useTopics();
+  const { isLoading } = useDeleteCategory();
   const columns = useCategoriesColumns();
   const navigate = useNavigate();
+
+  /* useEffect(() => {
+    console.log('Table loading', isLoading);
+  }, [isLoading]); */
+
   return (
     <Table
-      onRow={(record) => {
+      loading={isLoading}
+      onRow={(record, index) => {
         return {
           onClick: () => {
             navigate(`/categories/${record.id}`);
           },
         };
       }}
-      dataSource={categories.map((category) => ({
-        ...category,
-        key: category.id,
-      }))}
+      dataSource={categories.map((category) => {
+        return {
+          ...category,
+          key: category.id,
+        };
+      })}
       columns={columns}
+      expandable={{
+        expandedRowRender: (record) => {
+          const topicsByCategory = topics.filter(
+            (topic) => topic.categoryId === record.id,
+          );
+
+          return (
+            <ul>
+              {topicsByCategory.length > 0
+                ? topicsByCategory.map((topic) => (
+                    <li key={topic.id}>{topic.title}</li>
+                  ))
+                : null}
+            </ul>
+          );
+        },
+        rowExpandable: (record) => {
+          const topicsByCategory = topics.filter(
+            (topic) => topic.categoryId === record.id,
+          );
+          return topicsByCategory.length > 0;
+        },
+      }}
     />
   );
 }
 
-export default withContextCheck(CategoriesTable);
+export default withContextCheck(CategoriesTable, CategoriesFormContext);
