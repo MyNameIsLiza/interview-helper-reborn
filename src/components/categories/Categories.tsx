@@ -4,7 +4,6 @@ import { useCallback, useMemo, useState } from 'react';
 
 import type { Category } from '../../types';
 import Loader from '../axillary/loader/Loader';
-import useLogChanges from '../axillary/useLogChanges';
 
 import CategoriesForm from './CategoriesForm';
 import CategoriesFormContext from './CategoriesFormContext';
@@ -12,13 +11,9 @@ import CategoriesTable from './CategoriesTable';
 import useCategories from './useCategories';
 
 export default function Categories(): React.ReactElement {
-  const { categories, isLoading, error, status, isFetching } = useCategories();
+  const { categories, isLoading, error, isFetching } = useCategories();
   const [open, setOpen] = useState<boolean>(false);
   const [category, setCategory] = useState<Category | null>(null);
-
-  useLogChanges('Categories', 'status', status);
-  useLogChanges('Categories', 'isFetching', isFetching);
-  useLogChanges('Categories', 'categories', categories);
 
   const contextData = useMemo(
     () => ({ setOpen, setCategory, category, open }),
@@ -32,11 +27,11 @@ export default function Categories(): React.ReactElement {
 
   return (
     <div>
-      <h1>Categories</h1>
+      <h1 className="text-h1">Categories</h1>
       {isLoading || isFetching ? (
         <Loader />
       ) : error ? (
-        <h2>{error.message}</h2>
+        <h2 className="text-h2">{error.message}</h2>
       ) : categories.length > 0 ? (
         <div>
           <CategoriesFormContext.Provider value={contextData}>
@@ -64,7 +59,7 @@ export default function Categories(): React.ReactElement {
           </CategoriesFormContext.Provider>
         </div>
       ) : (
-        <h2>Categories are missing</h2>
+        <h2 className="text-h2">Categories are missing</h2>
       )}
     </div>
   );

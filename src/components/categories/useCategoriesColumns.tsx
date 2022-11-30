@@ -1,9 +1,10 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { message, Popconfirm } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import type { CellType } from 'rc-table/lib/interface';
 import { useContext } from 'react';
 
-import type { Category, Topic } from '../../types';
+import type { Category } from '../../types';
 
 import CategoriesFormContext from './CategoriesFormContext';
 import useDeleteCategory from './useDeleteCategory';
@@ -50,12 +51,21 @@ export default function useCategoriesColumns(): ColumnsType<CategoryColumnsType>
             },
           } as CellType<CategoryColumnsType>,
           children: (
-            <DeleteOutlined
-              onClick={async (event) => {
-                event.stopPropagation();
-                await deleteCategory(category.id);
+            <Popconfirm
+              title="Are you sure to delete this category?"
+              onConfirm={async () => {
+                // TODO Promise
+                const result = await deleteCategory(category.id);
+                await message.success(`Category ${result.title} was deleted`);
               }}
-            />
+              onCancel={(): void => {
+                console.log('Cancel delete');
+              }}
+              okText="Yes"
+              cancelText="No"
+            >
+              <DeleteOutlined />
+            </Popconfirm>
           ),
         };
       },

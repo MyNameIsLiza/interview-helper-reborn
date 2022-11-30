@@ -15,7 +15,7 @@ function CategoriesForm(): React.ReactElement {
   const { editCategory } = useEditCategory();
 
   const onFinish = useCallback(
-    async (values: Category): Promise<any> => {
+    async (values: Category): Promise<void> => {
       await (context?.category?.id
         ? editCategory({ ...values, id: context.category.id })
         : addCategory(values));

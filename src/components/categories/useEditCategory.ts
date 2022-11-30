@@ -1,22 +1,27 @@
+import type { UseMutateAsyncFunction, UseMutationResult } from 'react-query';
 import { useMutation, useQueryClient } from 'react-query';
 
 import type { ServerError } from '../../services/api';
 import { categoriesRequests } from '../../services/api';
-import { Category } from '../../types';
+import type { Category } from '../../types';
 
-import useCategories from './useCategories';
+interface UseEditCategoryResult {
+  editCategory: UseMutateAsyncFunction<Category, unknown, Category>;
+  error: ServerError;
+  isLoading: UseMutationResult['isLoading'];
+}
 
-export default function useEditCategory() {
+export default function useEditCategory(): UseEditCategoryResult {
   const queryClient = useQueryClient();
   const query = useMutation('edit category', categoriesRequests.editCategory, {
     onSuccess: async (_, category) => {
-      /*queryClient.setQueryData('categories', (oldQueryData) => {
+      /* queryClient.setQueryData('categories', (oldQueryData) => {
         console.log('oldQueryData', oldQueryData);
         Array.isArray(oldQueryData);
         {
           return [...oldQueryData, category];
         }
-      });*/
+      }); */
       queryClient.setQueryData(['category', category.id], (oldQueryData) => {
         console.log('oldQueryData', oldQueryData);
         return category;
@@ -26,7 +31,7 @@ export default function useEditCategory() {
         'categories',
         categoriesRequests.fetchCategories,
       );
-      /*await queryClient.fetchQuery(['category', category.id], () =>
+      /* await queryClient.fetchQuery(['category', category.id], () =>
        categoriesRequests.fetchCategory(category.id),
      ); */
     },

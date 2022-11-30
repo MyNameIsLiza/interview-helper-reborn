@@ -1,65 +1,62 @@
-import type { AxiosResponse } from 'axios';
 import axios from 'axios';
 
 import type { Category, Topic } from '../types';
 
-export interface ServerAxiosResponse<ResultType> {
+export interface APIResponse<ResultType> {
   message: string;
   result: ResultType;
 }
-
-export type ServerResponse<ResultType> = Promise<
-  AxiosResponse<ServerAxiosResponse<ResultType>>
->;
 
 export type ServerError = {
   message: string;
 } | null;
 
-export type TopicsParams = {
-  categoryId: string;
-} | null;
+export interface TopicsParameters {
+  categoryId?: string;
+}
 
 const url = 'https://interview-helper-api.herokuapp.com/api';
 
 export const categoriesRequests = {
-  fetchCategories: async () =>
+  fetchCategories: async (): Promise<Category[]> =>
     axios
-      .get<ServerAxiosResponse<Category[]>>(`${url}/categories`)
+      .get<APIResponse<Category[]>>(`${url}/categories`)
       .then((response) => response.data.result),
-  fetchCategory: async (id = '') =>
+  fetchCategory: async (id = ''): Promise<Category> =>
     axios
-      .get<ServerAxiosResponse<Category>>(`${url}/categories/${id}`)
+      .get<APIResponse<Category>>(`${url}/categories/${id}`)
       .then((response) => response.data.result),
-  deleteCategory: async (id: string): ServerResponse<Category> =>
+  deleteCategory: async (id: string): Promise<Category> =>
     axios
-      .delete(`${url}/categories/${id}`)
+      .delete<APIResponse<Category>>(`${url}/categories/${id}`)
       .then((response) => response.data.result),
-  addCategory: async (
-    category: Omit<Category, 'id'>,
-  ): ServerResponse<Category> =>
+  addCategory: async (category: Omit<Category, 'id'>): Promise<Category> =>
     axios
-      .post(`${url}/categories`, category)
+      .post<APIResponse<Category>>(`${url}/categories`, category)
       .then((response) => response.data.result),
-  editCategory: async (category: Category): ServerResponse<Category> =>
+  editCategory: async (category: Category): Promise<Category> =>
     axios
-      .put(`${url}/categories`, category)
+      .put<APIResponse<Category>>(`${url}/categories`, category)
       .then((response) => response.data.result),
 };
 
 export const topicsRequests = {
-  fetchTopics: async (parameters?: TopicsParams) =>
+  fetchTopics: async (parameters?: TopicsParameters): Promise<Topic[]> =>
     axios
-      .get<ServerAxiosResponse<Topic[]>>(`${url}/topics`, {
+      .get<APIResponse<Topic[]>>(`${url}/topics`, {
         params: parameters,
       })
       .then((response) => response.data.result),
-  deleteTopic: async (id: string): ServerResponse<Topic> =>
+  deleteTopic: async (id: string): Promise<Topic> =>
     axios
-      .delete(`${url}/topics/${id}`)
+      .delete<APIResponse<Topic>>(`${url}/topics/${id}`)
       .then((response) => response.data.result),
-  addTopic: async (topic: Omit<Topic, 'id'>): ServerResponse<Topic> =>
-    axios.post(`${url}/topics`, topic).then((response) => response.data.result),
-  editTopic: async (topic: Topic): ServerResponse<Topic> =>
-    axios.put(`${url}/topics`, topic).then((response) => response.data.result),
+  addTopic: async (topic: Omit<Topic, 'id'>): Promise<Topic> =>
+    axios
+      .post<APIResponse<Topic>>(`${url}/topics`, topic)
+      .then((response) => response.data.result),
+  editTopic: async (topic: Topic): Promise<Topic> =>
+    axios
+      .put<APIResponse<Topic>>(`${url}/topics`, topic)
+      .then((response) => response.data.result),
 };

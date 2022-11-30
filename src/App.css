@@ -3,7 +3,7 @@
 }
 
 .text-main {
-  color: #6E3AFF !important;
+  color: #6e3aff !important;
 }
 
 body {
@@ -16,4 +16,8 @@ ul {
 
 .cursor-pointer {
   cursor: pointer;
+}
+
+.cursor-pencil {
+  cursor: url('../public/pencil.cur'), pointer;
 }

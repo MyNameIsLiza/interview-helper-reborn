@@ -1,5 +1,4 @@
 import { Table } from 'antd';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import withContextCheck from '../../hoc/withContextCheck';
@@ -24,9 +23,9 @@ function CategoriesTable(): React.ReactElement | null {
   return (
     <Table
       loading={isLoading}
-      onRow={(record, index) => {
+      onRow={(record): { onClick: () => void } => {
         return {
-          onClick: () => {
+          onClick: (): void => {
             navigate(`/categories/${record.id}`);
           },
         };

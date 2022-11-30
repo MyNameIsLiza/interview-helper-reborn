@@ -15,12 +15,12 @@ module.exports = {
     'plugin:@typescript-eslint/all',
     'plugin:unicorn/all',
     'plugin:eslint-comments/recommended',
-    'plugin:prettier/recommended',
+
     'plugin:jest/all',
     'plugin:postcss-modules/recommended',
     'plugin:react-redux/recommended',
     'plugin:compat/recommended',
-    'prettier',
+    'prettier','plugin:prettier/recommended',
   ],
   overrides: [
     {
@@ -110,7 +110,7 @@ module.exports = {
   root: true,
   rules: {
     'jest/require-hook': 0,
-    'no-param-reassign': ['error', { props: false }],
+    'no-param-reassign': ['error', {props: false}],
     // 'consistent-return': 'off',
     // 'arrow-body-style': 0,
     // 'comma-dangle': 0,
@@ -130,7 +130,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
-    'no-void': ['error', { allowAsStatement: true }],
+    'no-void': ['error', {allowAsStatement: true}],
     'no-magic-numbers': [
       'error',
       {
@@ -191,6 +191,7 @@ module.exports = {
     'no-console': 'warn',
     'react/jsx-props-no-spreading': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'warn',
+    'unicorn/no-keyword-prefix': 'off'
   },
   settings: {
     'import/parsers': {

@@ -1,8 +1,6 @@
 import type { Context, FC } from 'react';
 import { useContext } from 'react';
 
-import CategoriesFormContext from '../components/categories/CategoriesFormContext';
-
 export default function withContextCheck<
   T1 extends Record<string, unknown>,
   T2,

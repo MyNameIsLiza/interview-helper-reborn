@@ -1,3 +1,9 @@
+import type { Category } from '../../types';
+
 export const categoriesRequests = {
-  fetchCategories: async () => ({ data: { result: [] } }),
+  fetchCategories: async (): Promise<Category[]> => {
+    return new Promise((resolve) => {
+      resolve([]);
+    });
+  },
 };

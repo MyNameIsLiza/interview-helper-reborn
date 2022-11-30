@@ -1,13 +1,15 @@
 import { Table } from 'antd';
 
-import withContextCheck from '../../hoc/withContextCheck';
+import useLogChanges from '../axillary/useLogChanges';
 
-import TopicsFormContext from './TopicsFormContext';
 import useTopics from './useTopics';
 import useTopicsColumns from './useTopicsColumns';
 
-function TopicsTable(): React.ReactElement | null {
-  const { topics } = useTopics();
+function TopicsTable(properties: {
+  categoryId?: string;
+}): React.ReactElement | null {
+  useLogChanges('TopicsTable', 'props', properties);
+  const { topics } = useTopics(properties);
   const columns = useTopicsColumns();
 
   return (
@@ -21,4 +23,4 @@ function TopicsTable(): React.ReactElement | null {
   );
 }
 
-export default withContextCheck(TopicsTable, TopicsFormContext);
+export default TopicsTable;

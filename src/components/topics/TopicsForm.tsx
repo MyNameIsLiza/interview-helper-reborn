@@ -2,6 +2,7 @@ import { Button, Form, Input } from 'antd';
 import { useCallback, useContext, useEffect } from 'react';
 
 import withContextCheck from '../../hoc/withContextCheck';
+import { topicsRequests } from '../../services/api';
 import type { Topic } from '../../types';
 
 import TopicsFormContext from './TopicsFormContext';
@@ -11,12 +12,10 @@ function TopicsForm(): React.ReactElement {
   const context = useContext(TopicsFormContext);
   const [form] = Form.useForm();
 
-  const onFinish = useCallback((values: Topic): void => {
-    if (context?.topic?.id) {
-      // dispatch(editTopic({ ...values, id: context.topic.id }));
-    } else {
-      // dispatch(addTopic(values));
-    }
+  const onFinish = useCallback(async (values: Topic): Promise<void> => {
+    await (context?.topic?.id
+      ? topicsRequests.editTopic({ ...values, id: context.topic.id })
+      : topicsRequests.addTopic(values));
     context?.setTopic(null);
     context?.setOpen(false);
   }, []);

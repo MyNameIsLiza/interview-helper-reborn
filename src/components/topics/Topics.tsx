@@ -27,11 +27,11 @@ export default function Topics(): React.ReactElement {
 
   return (
     <div>
-      <h1>Topics</h1>
+      <h1 className="text-h1">Topics</h1>
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <h2>{error.message}</h2>
+        <h2 className="text-h2">{error.message}</h2>
       ) : topics.length > 0 ? (
         <div>
           <TopicsFormContext.Provider value={contextData}>
@@ -59,7 +59,7 @@ export default function Topics(): React.ReactElement {
           </TopicsFormContext.Provider>
         </div>
       ) : (
-        <h2>Topics are missing</h2>
+        <h2 className="text-h2">Topics are missing</h2>
       )}
     </div>
   );

@@ -9,6 +9,7 @@ import Topics from './components/topics/Topics';
 
 import 'antd/dist/antd.css';
 import './App.css';
+import './index.css';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { staleTime: 20_000 } },
